@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  laravel-app:
+    container_name: laravel-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_DBHOST=mysql
+      - MYSQL_DBPORT=3306
+      - MYSQL_DBUSER=root
+      - MYSQL_DBPASS=mypassword
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - ./app:/var/www/html
+      - ./log/apache2:/var/log/apache2
+
+  cron:
+    container_name: cron
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
+    restart: always
+    volumes:
+      - ./app:/var/www/html
+      - ./log/cron:/var/log/cron
+
